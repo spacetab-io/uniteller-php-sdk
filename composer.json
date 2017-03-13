@@ -1,0 +1,34 @@
+{
+  "name": "tmconsulting/uniteller-php-sdk",
+  "description": "PHP Library for integration with Uniteller payment processing.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "roquie",
+      "email": "roquie0@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5",
+    "php-http/httplug": "^1.1",
+    "php-http/guzzle6-adapter": "^1.1"
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^3.2",
+    "phpunit/phpunit": "^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tmconsulting\\Uniteller\\": "src"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tmconsulting\\Uniteller\\Tests\\": "tests"
+    }
+  }
+}

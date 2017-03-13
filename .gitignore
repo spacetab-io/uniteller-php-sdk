@@ -1,0 +1,4 @@
+.idea/
+vendor/
+/index.php
+example/credentials.php
