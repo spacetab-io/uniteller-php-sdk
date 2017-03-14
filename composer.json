@@ -10,13 +10,13 @@
     }
   ],
   "require": {
-    "php": ">=5.5",
+    "php": ">=5.6",
     "php-http/httplug": "^1.1",
     "php-http/guzzle6-adapter": "^1.1"
   },
   "require-dev": {
     "symfony/var-dumper": "^3.2",
-    "phpunit/phpunit": "^6.0"
+    "phpunit/phpunit": "~5.7"
   },
   "autoload": {
     "psr-4": {
@@ -30,5 +30,8 @@
     "psr-4": {
       "Tmconsulting\\Uniteller\\Tests\\": "tests"
     }
+  },
+  "scripts": {
+    "test": "phpunit --coverage-text"
   }
 }

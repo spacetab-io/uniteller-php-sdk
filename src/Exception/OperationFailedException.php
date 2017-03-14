@@ -10,7 +10,6 @@ namespace Tmconsulting\Uniteller\Exception;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Tmconsulting\Uniteller\Error\Error;
-use Tmconsulting\Uniteller\Http\ErrorException;
 
 class OperationFailedException extends ErrorException
 {
@@ -28,6 +27,6 @@ class OperationFailedException extends ErrorException
     ) {
         parent::__construct($message, $request, $response, $previous);
 
-        $this->firstCode = Error::OPERATION_FAILED;
+        $this->errorCode = Error::OPERATION_FAILED;
     }
 }

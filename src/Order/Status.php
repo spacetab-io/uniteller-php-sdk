@@ -19,7 +19,7 @@ final class Status
     /**
      *  Мерчант не знает об этом заказе или считает, что заказ все еще не оплачен;
      */
-    const NEW            = 'new';
+    const NEWEST         = 'new';
 
     /**
      * Средства успешно заблокированы (выполнена авторизационная транзакция).
@@ -67,8 +67,8 @@ final class Status
     public static function resolve($value)
     {
         switch (strtolower($value)) {
-            case self::NEW:
-                return self::NEW;
+            case self::NEWEST:
+                return self::NEWEST;
             case self::AUTHORIZED:
                 return self::AUTHORIZED;
             case self::NOT_AUTHORIZED:
