@@ -5,6 +5,13 @@
 [![License](https://poser.pugx.org/tmconsulting/uniteller-php-sdk/license)](https://packagist.org/packages/tmconsulting/uniteller-php-sdk)
 [![composer.lock](https://poser.pugx.org/tmconsulting/uniteller-php-sdk/composerlock)](https://packagist.org/packages/tmconsulting/uniteller-php-sdk)
 
+<br />
+<p align="center">
+    <img src="https://www.uniteller.ru//local/templates/index/img/base/logo.svg" width="220">
+</p>
+
+<br />
+
 PHP (5.6+) SDK для интеграции с интернет-эквайрингом от Uniteller.
 
 Реализовано:
