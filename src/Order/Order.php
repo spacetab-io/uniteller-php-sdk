@@ -425,6 +425,7 @@ class Order implements ArraybleInterface
     }
 
     /**
+     * @param $value
      * @return $this
      */
     public function setCvc2($value)

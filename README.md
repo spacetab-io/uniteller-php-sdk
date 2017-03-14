@@ -1,6 +1,8 @@
 # Uniteller PHP SDK
 
-PHP (5.4+) SDK для интеграции с интернет-эквайрингом от Uniteller.
+[![Build Status](https://travis-ci.org/tmconsulting/uniteller-php-sdk.svg?branch=master)](https://travis-ci.org/tmconsulting/uniteller-php-sdk)
+
+PHP (5.6+) SDK для интеграции с интернет-эквайрингом от Uniteller.
 
 Реализовано:
 * оплата (метод `pay`)

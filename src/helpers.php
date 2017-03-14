@@ -11,7 +11,7 @@ namespace Tmconsulting\Uniteller;
  * @param $array
  * @param $key
  * @param null $default
- * @return null|void
+ * @return mixed
  */
 function array_get($array, $key, $default = null)
 {
@@ -26,7 +26,7 @@ function array_get($array, $key, $default = null)
  * @param $object
  * @param $key
  * @param null $default
- * @return null
+ * @return mixed
  */
 function xml_get($object, $key, $default = null)
 {
