@@ -1,6 +1,7 @@
 # Uniteller PHP SDK
 
 [![Build Status](https://travis-ci.org/tmconsulting/uniteller-php-sdk.svg?branch=master)](https://travis-ci.org/tmconsulting/uniteller-php-sdk)
+[![Latest Stable Version](https://poser.pugx.org/tmconsulting/uniteller-php-sdk/v/stable)](https://packagist.org/packages/tmconsulting/uniteller-php-sdk)
 [![License](https://poser.pugx.org/tmconsulting/uniteller-php-sdk/license)](https://packagist.org/packages/tmconsulting/uniteller-php-sdk)
 [![composer.lock](https://poser.pugx.org/tmconsulting/uniteller-php-sdk/composerlock)](https://packagist.org/packages/tmconsulting/uniteller-php-sdk)
 
