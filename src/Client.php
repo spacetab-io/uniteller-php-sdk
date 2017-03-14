@@ -365,7 +365,7 @@ class Client implements ClientInterface
      *
      * @param $name
      * @param $parameters
-     * @return \Tmconsulting\Uniteller\Request\RequestInterface
+     * @return Order|mixed
      */
     private function callRequestFor($name, $parameters)
     {
