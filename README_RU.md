@@ -26,7 +26,8 @@
 
 <br />
 
-PHP (5.6+) SDK для интеграции с интернет-эквайрингом от Uniteller.
+PHP (5.6+) SDK для интеграции с интернет-эквайрингом от Uniteller (не официальная).
+Также, SDK интегрирован с библиотекой [Payum](https://github.com/Payum/Payum) и вы можете использовать этот [шлюз]((https://github.com/tmconsulting/payum-uniteller-gateway)) для работы.
 
 Реализовано:
 * оплата (метод `pay`)

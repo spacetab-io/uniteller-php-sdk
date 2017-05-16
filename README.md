@@ -26,7 +26,9 @@
 
 <br />
 
-PHP (5.6+) SDK for integration internet-acquiring of the Uniteller. [The documentation is available in Russian language](README_RU.md). 
+PHP (5.6+) SDK for integration internet-acquiring of the Uniteller (unofficial).
+[The documentation is available in Russian language](README_RU.md).
+Also, this SDK integrated with [Payum](https://github.com/Payum/Payum) library and you can use [gateway](https://github.com/tmconsulting/payum-uniteller-gateway).
 
 Features:
 * payment (method `pay`)
