@@ -26,34 +26,35 @@
 
 <br />
 
-PHP (5.6+) SDK for integration internet-acquiring of the Uniteller. [The documentation is available in Russian language](README_RU.md). 
+PHP (5.6+) SDK для интеграции с интернет-эквайрингом от Uniteller.
 
-Features:
-* payment (method `pay`)
-* cancel (method `unblock`)
-* receive results
-* callback (method for verify incoming signature)
-* general error handler for any request
-* general statuses (In the requests/responses may to meet `canceled` or `cancelled` variants. They will be converted to general status like as `cancelled`.)
+Реализовано:
+* оплата (метод `pay`)
+* отмена (метод `unblock`)
+* получение результатов
+* callback (проверка сигнатуры)
+* обработчик ошибок, кидает эксепшены даже на строку `ERROR: %s` в теле ответа на запрос
+* единство статусов.
 
-TODO:
-* validation
-* implement method `card`
-* implement method `recurrent`
-* implement method `confirm` 
+Что осталось:
+* прикрутить валидацию, используя декораторы
+* добавить билдер для метода `results`
+* метод `card`
+* метод `recurrent`
+* метод `confirm` 
 
-## Install
+## Установка
 
-For install package follow this command:
+Чтобы установить пакет, достаточно подключить его в проект, как зависимость:
 
 `composer require tmconsulting/uniteller-php-sdk`
 
-## Usage
+## Использование
 
-A few usage example the current SDK your can found on the `examples` folder. 
-Just follow instruction on `README.md` file. 
+Примеры использования SDK лежат в папке `./examples`, а так-же `README.md` файл, 
+в котором написан способ установки.
 
-### Configure credentials  
+### Установка учетных данных 
 
 ```php
 <?php
@@ -64,9 +65,10 @@ $uniteller->setPassword('you_password');
 $uniteller->setBaseUri('https://wpay.uniteller.ru');
 ```
 
-### Redirect to page payment 
+### Переход к оплате
 
-So, for redirect to page your enough to run `payment` method with parameters like as:
+Чтобы произвести оплату, достаточно вызвать метод `payment`, 
+он принимает первым аргументом либо построитель запроса, либо обычный массив параметров.
 
 ```php
 <?php
@@ -81,22 +83,23 @@ $builder
     ->setUrlReturnNo('http://google.ru/?q=failure');
 
 $uniteller->payment($builder)->go();
-// if you don't need redirect
+// Если переходить к оплате сразу нет необходимости,
+// можно получить готовую ссылку для оплаты
 // $uniteller->payment($builder)->getUri();
 
 ```
 
-or use plain array
+или
 
 ```php
 <?php
 $uniteller->payment([
     'Order_IDP' => mt_rand(10000, 99999),
-    // ... other parameters
+    // ... прочие параметры
 ])->go();
 ```
 
-### Cancel payment
+### Отмена платежа
  
 ```php
 <?php
@@ -106,7 +109,7 @@ $builder = (new CancelBuilder())->setBillNumber('RRN Number, (12 digits)');
 $results = $uniteller->cancel($builder);
 ```
 
-or
+или
 
 ```php
 <?php
@@ -117,15 +120,17 @@ $results = $uniteller->cancel([
     // ...
 ]);
 
+var_dump($results);
+
 foreach ($results as $payment) {
-    // see Tmconsulting\Uniteller\Order\Order for other methods.
+    // смотрите в Tmconsulting\Uniteller\Order\Order остальные методы.
     if ($payment->getStatus() === Status::CANCELLED) {
-        // payment was cancelled
+        // платеж отменён
     }    
 } 
 ```
 
-### Receive results
+### Получение результатов
 
 ```php
 <?php
@@ -139,9 +144,9 @@ var_dump($results);
 // $results[0]->getCardNumber();
 ```
 
-### Callback (gateway notification)
+### Callback
 
-Receive incoming parameters from gateway and verifying signature. 
+Приём данных от шлюза и проверка сигнатуры.
 
 ```php
 <?php
@@ -150,10 +155,11 @@ if (! $uniteller->getSignature()->verify('signature_from_post_params', ['all_par
 }
 ```
 
-## Tests
+
+## Тесты
 
 `vendor/bin/phpunit`
 
-## License
+## Лицензия
 
 MIT.

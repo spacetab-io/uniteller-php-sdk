@@ -25,4 +25,4 @@ before_script:
   - composer config --list --global
 
 script:
-  - composer test
+  - vendor/bin/phpunit

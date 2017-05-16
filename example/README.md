@@ -1,14 +1,13 @@
-# Client Payment Sample
+# SDK Payment Sample
 
-Простейший пример использования Client PHP SDK.
+Simple example of usage Client PHP SDK.
 
-## Установка 
+## Install 
 
-* `git clone ${THIS_REPO_URI}` 
+* `git clone git@github.com:tmconsulting/uniteller-php-sdk.git` 
 * `composer install`
 * `cd ./examples`
 * `mv ./credentials.example.php ./credentials.php`
 
-Теперь осталось прописать свои доступы в файле `./credentials.php` 
-и запустить веб-сервер: `php -S localhost:8080`
-
+First, your should be fill `./credentials.php` file with your credentials.
+Second, run server: `php -S localhost:8080`
