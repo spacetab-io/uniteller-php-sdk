@@ -8,6 +8,7 @@
 namespace Tmconsulting\Uniteller\Http;
 
 use BadMethodCallException;
+use Tmconsulting\Uniteller\Exception\FormatNotSupportedException;
 use Tmconsulting\Uniteller\Exception\RequestNotSupportedException;
 use Tmconsulting\Uniteller\Request\RequestInterface;
 use Tmconsulting\Uniteller;
@@ -42,6 +43,7 @@ final class Format
      * @param $format
      * @param $requestName
      * @return int
+     * @throws \Tmconsulting\Uniteller\Exception\FormatNotSupportedException
      * @throws \Tmconsulting\Uniteller\Exception\RequestNotSupportedException
      */
     public static function resolve($format, $requestName)

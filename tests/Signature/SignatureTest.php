@@ -5,9 +5,10 @@
  * GitHub: Roquie
  */
 
-namespace Tmconsulting\Uniteller\Tests;
+namespace Tmconsulting\Uniteller\Tests\Signature;
 
 use Tmconsulting\Uniteller\Signature\Signature;
+use Tmconsulting\Uniteller\Tests\TestCase;
 
 class SignatureTest extends TestCase
 {

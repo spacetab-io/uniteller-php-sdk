@@ -39,6 +39,7 @@ Features:
 * general statuses (In the requests/responses may to meet `canceled` or `cancelled` variants. They will be converted to general status like as `cancelled`.)
 
 TODO:
+* translate to English comments and system (error) messages
 * validation
 * implement method `card`
 * implement method `recurrent`

@@ -7,8 +7,8 @@
 
 namespace Tmconsulting\Uniteller\Http;
 
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
+use Http\Client\Exception\RequestException;
 use Http\Client\HttpClient;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

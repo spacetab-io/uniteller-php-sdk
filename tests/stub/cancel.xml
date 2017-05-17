@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<unitellerresult firstcode="" secondcode="" count="1">
+    <orders>
+        <order>
+            <ordernumber>Value of ordernumber</ordernumber>
+            <response_code>Value of response_code</response_code>
+            <recommendation>Value of recommendation</recommendation>
+            <message>Value of message</message>
+            <comment>Value of comment</comment>
+            <date>10.03.2017 15:42:42</date>
+            <total>Value of total</total>
+            <currency>Value of currency</currency>
+            <cardtype>Value of cardtype</cardtype>
+            <emoneytype>Value of emoneytype</emoneytype>
+            <cardnumber>Value of cardnumber</cardnumber>
+            <eorderdata>foo=bar, baz=bue</eorderdata>
+            <lastname>Value of lastname</lastname>
+            <firstname>Value of firstname</firstname>
+            <middlename>Value of middlename</middlename>
+            <bookingcom_id>Value of bookingcom_id</bookingcom_id>
+            <bookingcom_pincode>Value of bookingcom_pincode</bookingcom_pincode>
+            <gds_payment_purpose_id>Value of gds_payment_purpose_id</gds_payment_purpose_id>
+            <idata>Value of idata</idata>
+            <need_confirm>1</need_confirm>
+            <loan_id>Value of loan_id</loan_id>
+            <card_idp>Value of card_idp</card_idp>
+            <parent_order_number>Value of parent_order_number</parent_order_number>
+            <address>Value of address</address>
+            <email>Value of email</email>
+            <status>paid</status>
+            <pt_code>Value of pt_code</pt_code>
+            <approvalcode>Value of approvalcode</approvalcode>
+            <cvc2>Value of cvc2</cvc2>
+            <cardholder>Value of cardholder</cardholder>
+            <ipaddress>Value of ipaddress</ipaddress>
+            <billnumber>Value of billnumber</billnumber>
+            <bankname>Value of bankname</bankname>
+            <status>Value of status</status>
+            <error_code>Value of error_code</error_code>
+            <error_comment>Value of error_comment</error_comment>
+            <packetdate>10.03.2017 15:42:42</packetdate>
+            <paymenttype>Value of paymenttype</paymenttype>
+            <phone>Value of phone</phone>
+        </order>
+    </orders>
+</unitellerresult>

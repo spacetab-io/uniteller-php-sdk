@@ -504,9 +504,8 @@ class Order implements ArraybleInterface
         }
 
         foreach (explode(', ', $eOrderData) as $item) {
-            foreach (explode('=', $item) as list($key, $value)) {
-                $this->eOrderData[$key] = $value;
-            }
+            list($key, $value) = explode('=', $item);
+            $this->eOrderData[$key] = $value;
         }
 
         return $this;

@@ -39,7 +39,7 @@ class ExceptionFactory
      * @param $message
      * @param \Psr\Http\Message\RequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface $response
-     * @return \ErrorException
+     * @return ErrorException
      */
     public static function createFromMessage($message, RequestInterface $request, ResponseInterface $response)
     {
