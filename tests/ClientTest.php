@@ -136,7 +136,6 @@ class ClientTest extends TestCase
             ->method('execute')
             ->willReturnCallback(function ($array) {
                 $this->assertArrayHasKey('Shop_IDP', $array);
-                $this->assertArrayHasKey('Password', $array);
                 $this->assertArrayHasKey('Signature', $array);
             });
 
