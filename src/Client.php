@@ -283,8 +283,6 @@ class Client implements ClientInterface
     {
         $array = $this->getParameters($parameters);
         $array['Shop_IDP']  = $this->getShopId();
-        $array['Password']  = $this->getPassword();
-
         $array['Signature'] = $this->signature->create([
             'Shop_IDP'     => array_get($array, 'Shop_IDP'),
             'Order_IDP'    => array_get($array, 'Order_IDP'),
@@ -296,7 +294,7 @@ class Client implements ClientInterface
             'Card_IDP'     => array_get($array, 'Card_IDP'),
             'IData'        => array_get($array, 'IData'),
             'PT_Code'      => array_get($array, 'PT_Code'),
-            'Password'     => array_get($array, 'Password'),
+            'Password'     => $this->getPassword(),
         ]);
 
         return $this->getPayment()->execute($array, $this->getOptions());
