@@ -14,10 +14,12 @@ use Tmconsulting\Uniteller\Http\HttpManagerInterface;
 use Tmconsulting\Uniteller\Order\Order;
 use Tmconsulting\Uniteller\Payment\Payment;
 use Tmconsulting\Uniteller\Payment\PaymentInterface;
+use Tmconsulting\Uniteller\Recurrent\RecurrentRequest;
 use Tmconsulting\Uniteller\Request\RequestInterface;
 use Tmconsulting\Uniteller\Results\ResultsRequest;
-use Tmconsulting\Uniteller\Signature\Signature;
 use Tmconsulting\Uniteller\Signature\SignatureInterface;
+use Tmconsulting\Uniteller\Signature\SignaturePayment;
+use Tmconsulting\Uniteller\Signature\SignatureRecurrent;
 use GuzzleHttp\Client as GuzzleClient;
 use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
 
@@ -41,7 +43,12 @@ class Client implements ClientInterface
     /**
      * @var SignatureInterface
      */
-    protected $signature;
+    protected $signaturePayment;
+
+    /**
+     * @var SignatureInterface
+     */
+    protected $signatureRecurrent;
 
     /**
      * @var RequestInterface
@@ -52,6 +59,11 @@ class Client implements ClientInterface
      * @var RequestInterface
      */
     protected $resultsRequest;
+
+    /**
+     * @var RequestInterface
+     */
+    protected $recurrentRequest;
 
     /**
      * @var HttpManagerInterface
@@ -66,7 +78,9 @@ class Client implements ClientInterface
         $this->registerPayment(new Payment());
         $this->registerCancelRequest(new CancelRequest());
         $this->registerResultsRequest(new ResultsRequest());
-        $this->registerSignature(new Signature());
+        $this->registerRecurrentRequest(new RecurrentRequest());
+        $this->registerSignaturePayment(new SignaturePayment());
+        $this->registerSignatureRecurrent(new SignatureRecurrent());
     }
 
     /**
@@ -169,12 +183,34 @@ class Client implements ClientInterface
     }
 
     /**
+     * @param RequestInterface $request
+     * @return $this
+     */
+    public function registerRecurrentRequest(RequestInterface $request)
+    {
+        $this->recurrentRequest = $request;
+
+        return $this;
+    }
+
+    /**
      * @param \Tmconsulting\Uniteller\Signature\SignatureInterface $signature
      * @return $this
      */
-    public function registerSignature(SignatureInterface $signature)
+    public function registerSignaturePayment(SignatureInterface $signature)
     {
-        $this->signature = $signature;
+        $this->signaturePayment = $signature;
+
+        return $this;
+    }
+
+    /**
+     * @param \Tmconsulting\Uniteller\Signature\SignatureInterface $signature
+     * @return $this
+     */
+    public function registerSignatureRecurrent(SignatureInterface $signature)
+    {
+        $this->signatureRecurrent = $signature;
 
         return $this;
     }
@@ -258,11 +294,27 @@ class Client implements ClientInterface
     }
 
     /**
+     * @return \Tmconsulting\Uniteller\Request\RequestInterface
+     */
+    public function getRecurrentRequest()
+    {
+        return $this->recurrentRequest;
+    }
+
+    /**
      * @return \Tmconsulting\Uniteller\Signature\SignatureInterface
      */
-    public function getSignature()
+    public function getSignaturePayment()
     {
-        return $this->signature;
+        return $this->signaturePayment;
+    }
+
+    /**
+     * @return \Tmconsulting\Uniteller\Signature\SignatureInterface
+     */
+    public function getSignatureRecurrent()
+    {
+        return $this->signatureRecurrent;
     }
 
     /**
@@ -282,22 +334,20 @@ class Client implements ClientInterface
     public function payment($parameters)
     {
         $array = $this->getParameters($parameters);
-        $array['Shop_IDP']  = $this->getShopId();
-        $array['Password']  = $this->getPassword();
-
-        $array['Signature'] = $this->signature->create([
-            'Shop_IDP'     => array_get($array, 'Shop_IDP'),
-            'Order_IDP'    => array_get($array, 'Order_IDP'),
-            'Subtotal_P'   => array_get($array, 'Subtotal_P'),
-            'MeanType'     => array_get($array, 'MeanType'),
-            'EMoneyType'   => array_get($array, 'EMoneyType'),
-            'Lifetime'     => array_get($array, 'Lifetime'),
-            'Customer_IDP' => array_get($array, 'Customer_IDP'),
-            'Card_IDP'     => array_get($array, 'Card_IDP'),
-            'IData'        => array_get($array, 'IData'),
-            'PT_Code'      => array_get($array, 'PT_Code'),
-            'Password'     => array_get($array, 'Password'),
-        ]);
+        $array['Shop_IDP'] = $this->getShopId();
+        $array['Signature'] = $this->signaturePayment
+            ->setShopIdp(array_get($array, 'Shop_IDP'))
+            ->setOrderIdp(array_get($array, 'Order_IDP'))
+            ->setSubtotalP(array_get($array, 'Subtotal_P'))
+            ->setMeanType(array_get($array, 'MeanType'))
+            ->setEMoneyType(array_get($array, 'EMoneyType'))
+            ->setLifeTime(array_get($array, 'Lifetime'))
+            ->setCustomerIdp(array_get($array, 'Customer_IDP'))
+            ->setCardIdp(array_get($array, 'Card_IDP'))
+            ->setIData(array_get($array, 'IData'))
+            ->setPtCode(array_get($array, 'PT_Code'))
+            ->setPassword($this->getPassword())
+            ->create();
 
         return $this->getPayment()->execute($array, $this->getOptions());
     }
@@ -324,15 +374,28 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param array $parameters
+     * @param \Tmconsulting\Uniteller\Recurrent\RecurrentBuilder|array $parameters
      * @return mixed
      * @throws \Tmconsulting\Uniteller\Exception\NotImplementedException
      */
-    public function reccurent($parameters)
+    public function recurrent($parameters)
     {
-        throw new NotImplementedException(sprintf(
-            'In current moment, feature [%s] not implemented.', __METHOD__
-        ));
+        $array = $this->getParameters($parameters);
+        $array['Shop_IDP'] = $this->getShopId();
+
+        $this->signatureRecurrent
+            ->setShopIdp(array_get($array, 'Shop_IDP'))
+            ->setOrderIdp(array_get($array, 'Order_IDP'))
+            ->setSubtotalP(array_get($array, 'Subtotal_P'))
+            ->setParentOrderIdp(array_get($array, 'Parent_Order_IDP'))
+            ->setPassword($this->getPassword());
+        if (array_get($array, 'Parent_Shop_IDP')) {
+            $this->signatureRecurrent->setParentShopIdp(array_get($array, 'Parent_Shop_IDP'));
+        }
+
+        $array['Signature'] = $this->signatureRecurrent->create();
+
+        return $this->callRequestFor('recurrent', $array);
     }
 
     /**

@@ -17,10 +17,9 @@ interface SignatureInterface
     /**
      * Create signature for send payment request.
      *
-     * @param array $params
      * @return string
      */
-    public function create(array $params);
+    public function create();
 
     /**
      * Verify signature when Client will be send callback request.

@@ -62,7 +62,7 @@ class Error
      * Recurrent payment not  allowed
      * Магазин не поддерживает рекуррентные платежи
      */
-    const RECCURENT_PAY_NOT_ALLOWED   = 22;
+    const RECURENT_PAY_NOT_ALLOWED   = 22;
 
     /**
      * Incorrect Parent_Order_IDP

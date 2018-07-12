@@ -31,6 +31,7 @@ PHP (5.6+) SDK для интеграции с интернет-эквайрин�
 
 Реализовано:
 * оплата (метод `pay`)
+* рекуррентные платежи (метод `recurrent`)
 * отмена (метод `unblock`)
 * получение результатов
 * callback (проверка сигнатуры)
@@ -41,7 +42,6 @@ PHP (5.6+) SDK для интеграции с интернет-эквайрин�
 * прикрутить валидацию, используя декораторы
 * добавить билдер для метода `results`
 * метод `card`
-* метод `recurrent`
 * метод `confirm` 
 
 ## Установка
@@ -100,6 +100,31 @@ $uniteller->payment([
 ])->go();
 ```
 
+### Рекуррентный платеж
+ 
+```php
+<?php
+use Tmconsulting\Uniteller\Recurrent\RecurrentBuilder;
+
+$builder = (new RecurrentBuilder())
+    ->setOrderIdp(mt_rand(10000, 99999))
+    ->setSubtotalP(15)
+    ->setParentOrderIdp(00000) // id заказа магазина из ранее оплаченных в uniteller
+    ->setParentShopIdp($uniteller->getShopId()); // не обязательно задавать, если родительский платеж из того же магазина
+
+$results = $uniteller->recurrent($builder);
+```
+
+или
+
+```php
+<?php
+$results = $uniteller->recurrent([
+    'Order_IDP' => mt_rand(10000, 99999),
+    // ...
+]);
+```
+
 ### Отмена платежа
  
 ```php
@@ -151,7 +176,7 @@ var_dump($results);
 
 ```php
 <?php
-if (! $uniteller->getSignature()->verify('signature_from_post_params', ['all_parameters_from_post'])) {
+if (! $uniteller->getSignaturePayment()->verify('signature_from_post_params', ['all_parameters_from_post'])) {
     return 'invalid_signature';
 }
 ```

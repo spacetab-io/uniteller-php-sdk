@@ -291,6 +291,11 @@ class Order implements ArraybleInterface
      */
     protected $packetDate;
 
+    /**
+     * @var string
+     */
+    protected $signature;
+
 
     /**
      * @param string $address
@@ -466,6 +471,8 @@ class Order implements ArraybleInterface
         }
 
         // Ёбаный насрать, а даты зачем разного формата отдавать?
+        // Полностью разделяю и поддерживаю данное негодование, значит ебашим костыли))
+        $date = str_replace('.', '-', $date);
         $this->date = DateTime::createFromFormat('U', strtotime($date));
 
         return $this;
@@ -1046,6 +1053,8 @@ class Order implements ArraybleInterface
         }
 
         // 10.03.2017 15:42:42 - o_O
+        // 2018.07.16 10:54:05 - O_o
+        $packetDate = str_replace('.', '-', $packetDate);
         $this->packetDate = DateTime::createFromFormat('U', strtotime($packetDate));
 
         return $this;
@@ -1057,6 +1066,25 @@ class Order implements ArraybleInterface
     public function getPacketDate()
     {
         return $this->packetDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSignature()
+    {
+        return $this->signature;
+    }
+
+    /**
+     * @param string $signature
+     * @return Order
+     */
+    public function setSignature($signature)
+    {
+        $this->signature = $signature;
+
+        return $this;
     }
 
     /**
@@ -1104,6 +1132,7 @@ class Order implements ArraybleInterface
             'Response_Message'       => $this->getResponseMessage(),
             'Status'                 => $this->getStatus(),
             'Total'                  => $this->getTotal(),
+            'Signature'              => $this->getSignature(),
         ];
     }
 }

@@ -47,7 +47,8 @@ class ClientTest extends TestCase
     {
         $uniteller = new Client();
         $this->assertInstanceOf(PaymentInterface::class, $uniteller->getPayment());
-        $this->assertInstanceOf(SignatureInterface::class, $uniteller->getSignature());
+        $this->assertInstanceOf(SignatureInterface::class, $uniteller->getSignaturePayment());
+        $this->assertInstanceOf(SignatureInterface::class, $uniteller->getSignatureRecurrent());
     }
 
     public function testSetOptionsUseArrayNotation()
@@ -123,9 +124,11 @@ class ClientTest extends TestCase
         $client = new Client();
         $client->registerCancelRequest($this->createMock(RequestInterface::class));
         $client->registerResultsRequest($this->createMock(RequestInterface::class));
+        $client->registerRecurrentRequest($this->createMock(RequestInterface::class));
 
         $this->assertInstanceOf(RequestInterface::class, $client->getCancelRequest());
         $this->assertInstanceOf(RequestInterface::class, $client->getResultsRequest());
+        $this->assertInstanceOf(RequestInterface::class, $client->getRecurrentRequest());
     }
 
     public function testShouldBePaymentMethodBuildCorrectArray()
@@ -136,7 +139,6 @@ class ClientTest extends TestCase
             ->method('execute')
             ->willReturnCallback(function ($array) {
                 $this->assertArrayHasKey('Shop_IDP', $array);
-                $this->assertArrayHasKey('Password', $array);
                 $this->assertArrayHasKey('Signature', $array);
             });
 
@@ -160,6 +162,7 @@ class ClientTest extends TestCase
         $client = new Client();
         $client->registerCancelRequest($request);
         $client->registerResultsRequest($request);
+        $client->registerRecurrentRequest($request);
 
         $client->cancel([]);
         $client->results([]);
@@ -189,7 +192,6 @@ class ClientTest extends TestCase
     public function provideUnsupportedRequestMethods()
     {
         return [
-            ['reccurent'],
             ['confirm'],
             ['card'],
         ];
@@ -228,6 +230,7 @@ class ClientTest extends TestCase
         $client = new Client();
         $client->registerResultsRequest($request);
         $client->registerCancelRequest($request);
+        $client->registerRecurrentRequest($request);
         $client->registerPayment($this->createMock(PaymentInterface::class));
 
         $arrayble = $this->createMock(ArraybleInterface::class);

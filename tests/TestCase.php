@@ -8,10 +8,11 @@ class TestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * @param $filename
+     * @param string $type
      * @return bool|string
      */
-    protected function getStubContents($filename)
+    protected function getStubContents($filename, $type='xml')
     {
-        return file_get_contents(__DIR__ . "/stub/$filename.xml");
+        return file_get_contents(__DIR__ . "/stub/$filename.$type");
     }
 }
