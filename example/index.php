@@ -9,6 +9,7 @@ require __DIR__ . '/credentials.php';
 
 $builder = new PaymentBuilder();
 $builder
+    ->useRecurrentPayment()
     ->setOrderIdp(mt_rand(10000, 99999))
     ->setSubtotalP(10)
     ->setCustomerIdp(mt_rand(10000, 99999))
@@ -22,7 +23,7 @@ echo <<< HTML
     <h2>Client Payment Sample</h2>
     <br>
     <p>Оплатить</p>
-    <a href="{$uri}">{$uri}</a>
+    <a href="{$uri}" target="_blank">{$uri}</a>
     <br>
     <p>Отмена</p>
     <a href="/cancel.php">/cancel.php</a>

@@ -7,38 +7,27 @@
 
 namespace Tmconsulting\Uniteller\Signature;
 
+
+use Tmconsulting\Uniteller\ArraybleInterface;
+
 /**
  * Class Signature
  *
  * @package Tmconsulting\Client
  */
-final class Signature implements SignatureInterface
+abstract class AbstractSignature implements SignatureInterface, ArraybleInterface
 {
+
     /**
      * Create signature for send payment request.
      *
-     * @param array $params
      * @return string
      */
-    public function create(array $params)
+    public function create()
     {
-        $defaults = [
-            'Shop_IDP'     => '',
-            'Order_IDP'    => '',
-            'Subtotal_P'   => '',
-            'MeanType'     => '',
-            'EMoneyType'   => '',
-            'Lifetime'     => '',
-            'Customer_IDP' => '',
-            'Card_IDP'     => '',
-            'IData'        => '',
-            'PT_Code'      => '',
-            'Password'     => '',
-        ];
-
         $string = join('&', array_map(function ($item) {
             return md5($item);
-        }, array_merge($defaults, $params)));
+        }, $this->toArray()));
 
         return strtoupper(md5($string));
     }

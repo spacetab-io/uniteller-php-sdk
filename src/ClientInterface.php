@@ -39,7 +39,7 @@ interface ClientInterface
      * @param array $parameters
      * @return mixed
      */
-    public function reccurent($parameters);
+    public function recurrent($parameters);
 
     /**
      * @param array $parameters

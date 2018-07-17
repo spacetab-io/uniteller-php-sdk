@@ -32,6 +32,7 @@ Also, this SDK integrated with [Payum](https://github.com/Payum/Payum) library a
 
 Features:
 * payment (method `pay`)
+* recurrent (method `recurrent`)
 * cancel (method `unblock`)
 * receive results
 * callback (method for verify incoming signature)
@@ -42,7 +43,6 @@ TODO:
 * translate to English comments and system (error) messages
 * validation
 * implement method `card`
-* implement method `recurrent`
 * implement method `confirm` 
 
 ## Install
@@ -99,6 +99,31 @@ $uniteller->payment([
 ])->go();
 ```
 
+### Recurrent payment
+ 
+```php
+<?php
+use Tmconsulting\Uniteller\Recurrent\RecurrentBuilder;
+
+$builder = (new RecurrentBuilder())
+    ->setOrderIdp(mt_rand(10000, 99999))
+    ->setSubtotalP(15)
+    ->setParentOrderIdp(00000) // order id of any past payment
+    ->setParentShopIdp($uniteller->getShopId()); // optional
+
+$results = $uniteller->recurrent($builder);
+```
+
+or use plain array
+
+```php
+<?php
+$results = $uniteller->recurrent([
+    'Order_IDP' => mt_rand(10000, 99999),
+    // ... other parameters
+]);
+```
+
 ### Cancel payment
  
 ```php
@@ -148,7 +173,7 @@ Receive incoming parameters from gateway and verifying signature.
 
 ```php
 <?php
-if (! $uniteller->getSignature()->verify('signature_from_post_params', ['all_parameters_from_post'])) {
+if (! $uniteller->getSignaturePayment()->verify('signature_from_post_params', ['all_parameters_from_post'])) {
     return 'invalid_signature';
 }
 ```
