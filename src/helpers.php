@@ -65,3 +65,17 @@ function csv_to_array($string, $isFlat = false)
 
     return $data;
 }
+
+/**
+ * @param $array
+ * @param array $excludeKeys
+ * @return mixed
+ */
+function array_except($array, array $excludeKeys)
+{
+    foreach ($excludeKeys as $key) {
+        unset($array[$key]);
+    }
+
+    return $array;
+}

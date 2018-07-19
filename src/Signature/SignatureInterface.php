@@ -15,18 +15,24 @@ namespace Tmconsulting\Uniteller\Signature;
 interface SignatureInterface
 {
     /**
-     * Create signature for send payment request.
+     * Create signature
      *
      * @return string
      */
     public function create();
 
     /**
-     * Verify signature when Client will be send callback request.
+     * Array params signature
      *
-     * @param $signature
-     * @param array $params
+     * @return array
+     */
+    public function toArray();
+
+    /**
+     * Verify signature
+     *
+     * @param string $signature
      * @return bool
      */
-    public function verify($signature, array $params);
+    public function verify($signature);
 }

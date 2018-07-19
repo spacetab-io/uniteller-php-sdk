@@ -52,4 +52,12 @@ interface ClientInterface
      * @return mixed
      */
     public function card($parameters);
+
+    /**
+     * Verify signature when Client will be send callback request.
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function verifyCallbackRequest(array $params);
 }
