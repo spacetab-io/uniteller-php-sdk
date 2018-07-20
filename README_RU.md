@@ -172,11 +172,11 @@ var_dump($results);
 
 ### Callback
 
-Приём данных от шлюза и проверка сигнатуры.
+Проверка сигнатуры при приёме данных от шлюза.
 
 ```php
 <?php
-if (! $uniteller->getSignaturePayment()->verify('signature_from_post_params', ['all_parameters_from_post'])) {
+if (! $uniteller->verifyCallbackRequest(['all_parameters_from_post_with_signature'])) {
     return 'invalid_signature';
 }
 ```

@@ -241,6 +241,33 @@ class ClientTest extends TestCase
         $client->{$methodName}($arrayble);
     }
 
+    public function testCallbackSignatureVerifying()
+    {
+        $params = [
+            'Order_ID'  => 'FOO',
+            'Status'    => 'paid',
+            'Signature' => '3F728AA479E50F5B10EE6C20258BFF88',
+        ];
+        $client = new Client();
+        $client->setPassword('LONG-PWD');
+        $this->assertTrue($client->verifyCallbackRequest($params));
+    }
+
+    public function testCallbackSignatureVerifyingWithFields()
+    {
+        $params = [
+            'Order_ID'     => 'FOO',
+            'Status'       => 'paid',
+            'AcquirerID'   => 'fOO',
+            'ApprovalCode' => 'BaR',
+            'BillNumber'   => 'baz',
+            'Signature'    => '1F4E3B63AE408D0BE1E33965E6697236',
+        ];
+        $client = new Client();
+        $client->setPassword('LONG-PWD');
+        $this->assertTrue($client->verifyCallbackRequest($params));
+    }
+
 }
 
 class HttpManagerStub implements HttpManagerInterface {

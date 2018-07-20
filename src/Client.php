@@ -17,6 +17,7 @@ use Tmconsulting\Uniteller\Payment\PaymentInterface;
 use Tmconsulting\Uniteller\Recurrent\RecurrentRequest;
 use Tmconsulting\Uniteller\Request\RequestInterface;
 use Tmconsulting\Uniteller\Results\ResultsRequest;
+use Tmconsulting\Uniteller\Signature\SignatureCallback;
 use Tmconsulting\Uniteller\Signature\SignatureInterface;
 use Tmconsulting\Uniteller\Signature\SignaturePayment;
 use Tmconsulting\Uniteller\Signature\SignatureRecurrent;
@@ -51,6 +52,11 @@ class Client implements ClientInterface
     protected $signatureRecurrent;
 
     /**
+     * @var SignatureInterface
+     */
+    protected $signatureCallback;
+
+    /**
      * @var RequestInterface
      */
     protected $cancelRequest;
@@ -81,6 +87,7 @@ class Client implements ClientInterface
         $this->registerRecurrentRequest(new RecurrentRequest());
         $this->registerSignaturePayment(new SignaturePayment());
         $this->registerSignatureRecurrent(new SignatureRecurrent());
+        $this->registerSignatureCallback(new SignatureCallback());
     }
 
     /**
@@ -216,6 +223,17 @@ class Client implements ClientInterface
     }
 
     /**
+     * @param \Tmconsulting\Uniteller\Signature\SignatureInterface $signature
+     * @return $this
+     */
+    public function registerSignatureCallback(SignatureInterface $signature)
+    {
+        $this->signatureCallback = $signature;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getOptions()
@@ -315,6 +333,14 @@ class Client implements ClientInterface
     public function getSignatureRecurrent()
     {
         return $this->signatureRecurrent;
+    }
+
+    /**
+     * @return \Tmconsulting\Uniteller\Signature\SignatureInterface
+     */
+    public function getSignatureCallback()
+    {
+        return $this->signatureCallback;
     }
 
     /**
@@ -457,5 +483,21 @@ class Client implements ClientInterface
         }
 
         return $parameters;
+    }
+
+    /**
+     * Verify signature when Client will be send callback request.
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function verifyCallbackRequest(array $params)
+    {
+        return $this->signatureCallback
+            ->setOrderId(array_get($params, 'Order_ID'))
+            ->setStatus(array_get($params, 'Status'))
+            ->setFields(array_except($params, ['Order_ID', 'Status', 'Signature']))
+            ->setPassword($this->getPassword())
+            ->verify(array_get($params, 'Signature'));
     }
 }
