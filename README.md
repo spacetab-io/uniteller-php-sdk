@@ -19,9 +19,6 @@
     <a href="https://packagist.org/packages/tmconsulting/uniteller-php-sdk" target="_blank">
         <img src="https://poser.pugx.org/tmconsulting/uniteller-php-sdk/license" />
     </a>
-    <a href="https://packagist.org/packages/tmconsulting/uniteller-php-sdk" target="_blank">
-        <img src="https://poser.pugx.org/tmconsulting/uniteller-php-sdk/composerlock" />
-    </a>
 </p>
 
 <br />
