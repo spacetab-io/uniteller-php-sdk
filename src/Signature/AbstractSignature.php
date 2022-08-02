@@ -25,8 +25,8 @@ abstract class AbstractSignature implements SignatureInterface, ArraybleInterfac
      */
     public function create()
     {
-        $string = join('&', array_map(function ($item) {
-            return md5($item);
+        $string = implode('&', array_map(static function ($item) {
+            return md5($item ?? '');
         }, $this->toArray()));
 
         return strtoupper(md5($string));

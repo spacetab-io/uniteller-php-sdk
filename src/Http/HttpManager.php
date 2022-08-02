@@ -7,11 +7,16 @@
 
 namespace Tmconsulting\Uniteller\Http;
 
+use Exception;
 use GuzzleHttp\Psr7\Request;
 use Http\Client\Exception\RequestException;
 use Http\Client\HttpClient;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use SimpleXMLElement;
+use Throwable;
+use Tmconsulting\Uniteller\Exception\ErrorException;
 use Tmconsulting\Uniteller\Exception\ExceptionFactory;
 use Tmconsulting\Uniteller\Exception\UnitellerException;
 use function Tmconsulting\Uniteller\csv_to_array;
@@ -24,7 +29,7 @@ use function Tmconsulting\Uniteller\csv_to_array;
 class HttpManager implements HttpManagerInterface
 {
     /**
-     * @var \Http\Client\HttpClient
+     * @var HttpClient
      */
     protected $httpClient;
 
@@ -36,7 +41,7 @@ class HttpManager implements HttpManagerInterface
     /**
      * HttpManager constructor.
      *
-     * @param \Http\Client\HttpClient $httpClient
+     * @param HttpClient $httpClient
      * @param array $options
      */
     public function __construct(HttpClient $httpClient, array $options = [])
@@ -45,11 +50,7 @@ class HttpManager implements HttpManagerInterface
         $this->options    = $options;
     }
 
-    /**
-     * @param string $format
-     * @return array
-     */
-    protected function getDefaultHeaders($format)
+    protected function getDefaultHeaders(string $format): array
     {
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
@@ -76,9 +77,10 @@ class HttpManager implements HttpManagerInterface
      * @param null $data
      * @param array $headers
      * @param string $format
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return string
+     * @throws ErrorException|ClientExceptionInterface
      */
-    public function request($uri, $method = 'POST', $data = null, array $headers = [], $format='xml')
+    public function request($uri, $method = 'POST', $data = null, array $headers = [], string $format = 'xml'): string
     {
         $uri = sprintf('%s/%s?%s', $this->options['base_uri'], $uri, http_build_query([
             'Shop_ID'  => $this->options['shop_id'],
@@ -91,13 +93,16 @@ class HttpManager implements HttpManagerInterface
 
         try {
             $response = $this->httpClient->sendRequest($request);
-        }
-        catch (RequestException $e) {
+        } catch (RequestException $e) {
             throw UnitellerException::create($request, $e->getResponse());
         }
 
-        $this->basicError($request, $response);
-        $body = $response->getBody()->getContents();
+        if ($response->getStatusCode() < 200 || $response->getStatusCode() > 299) {
+            throw UnitellerException::create($request, $response);
+        }
+
+        $body = (string) $response->getBody();
+
         $this->providerError($body, $request, $response, $format);
 
         return $body;
@@ -105,11 +110,12 @@ class HttpManager implements HttpManagerInterface
 
     /**
      * @param $body
-     * @param $request
-     * @param $response
-     * @throws \ErrorException
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @param string $format
+     * @throws ErrorException
      */
-    protected function providerError($body, RequestInterface $request, ResponseInterface $response, $format='xml')
+    protected function providerError($body, RequestInterface $request, ResponseInterface $response, string $format = 'xml'): void
     {
         if ($format === 'csv') {
             $data = csv_to_array($body, true);
@@ -120,39 +126,33 @@ class HttpManager implements HttpManagerInterface
                 );
             }
 
+            return;
         }
-        elseif ($format === 'xml') {
 
+        if ($format === 'xml') {
             if (substr($body, 0, 6) === 'ERROR:') {
                 throw ExceptionFactory::createFromMessage(
                     substr($body, 7), $request, $response
                 );
             }
 
-            $xml = new \SimpleXMLElement((string)$body);
-            if (($firstCode = (string)$xml->attributes()['firstcode']) == 0) {
+            try {
+                $xml = new SimpleXMLElement((string) $body);
+            } catch (Throwable $e) {
+                throw new UnitellerException('XML parsing failed', $request, $response, $e);
+            }
+
+            $firstCode = (int) $xml->attributes()['firstcode'];
+
+            if ($firstCode === 0) {
                 return;
             }
 
-            $secondCode = (string)$xml->attributes()['secondcode'];
+            $secondCode = (string) $xml->attributes()['secondcode'];
 
             throw ExceptionFactory::create(
                 $firstCode, $secondCode, $request, $response
             );
-
         }
-    }
-
-    /**
-     * @param \Psr\Http\Message\RequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface $response
-     */
-    protected function basicError(RequestInterface $request, ResponseInterface $response)
-    {
-        if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
-            return;
-        }
-
-        throw UnitellerException::create($request, $response);
     }
 }

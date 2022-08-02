@@ -14,7 +14,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
 use Tmconsulting\Uniteller\Exception\AuthConfirmIsNotAllowedException;
 use Tmconsulting\Uniteller\Exception\AuthenticationException;
 use Tmconsulting\Uniteller\Exception\UnitellerException;

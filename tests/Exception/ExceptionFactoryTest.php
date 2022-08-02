@@ -36,7 +36,7 @@ class ExceptionFactoryTest extends TestCase
             [NotSupportedSFieldException::class, 'S_FIELDS contains field \'%name%\' which is not allowed'],
             [NotSupportedSFieldException::class, 'S_FIELDS contains field \'%name%\''],
             [OperationFailedException::class, 'The operation failed'],
-            [ErrorException::class, null],
+            [ErrorException::class, ''],
         ];
     }
 
@@ -44,7 +44,7 @@ class ExceptionFactoryTest extends TestCase
      * @dataProvider provideErrorMessages
      * @param $e
      * @param $message
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     public function testItShouldBeCreateExceptionFromMessage($e, $message)
     {

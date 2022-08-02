@@ -35,35 +35,32 @@ class ExceptionFactory
     /**
      * В /results запросе кода ошибки нет, есть только его сообщение.
      * С помощью регулярок (а как еще!?) вызовем нужный эксепшен на помощь разработчикам.
-     *
-     * @param $message
-     * @param \Psr\Http\Message\RequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface $response
-     * @return ErrorException
      */
-    public static function createFromMessage($message, RequestInterface $request, ResponseInterface $response)
-    {
+    public static function createFromMessage(
+        string $message,
+        RequestInterface $request,
+        ResponseInterface $response
+    ): ErrorException {
         foreach (self::$messageToErrorCode as $code => $regex) {
             preg_match('/' . $regex . '/', $message, $matches);
+
             if (count($matches) > 0) {
                 return self::create($code, $message, $request, $response);
             }
         }
 
-        return self::create(null, $message, $request, $response);
+        return self::create(Error::UNKNOWN, $message, $request, $response);
     }
 
     /**
      * Конвертируем код ошибки в эксепшен.
-     *
-     * @param $code
-     * @param $message
-     * @param \Psr\Http\Message\RequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface $response
-     * @return \ErrorException
      */
-    public static function create($code, $message, RequestInterface $request, ResponseInterface $response)
-    {
+    public static function create(
+        int $code,
+        string $message,
+        RequestInterface $request,
+        ResponseInterface $response
+    ): ErrorException {
         switch ($code) {
             case Error::AUTH_CONFIRM_IS_NOT_ALLOWED:
                 return new AuthConfirmIsNotAllowedException(
